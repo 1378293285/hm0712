@@ -65,6 +65,8 @@ export default {
             .then(res => {
               const data = res.data
               console.log(data)
+              // 保存登录状态
+              window.sessionStorage.setItem('hm0712', JSON.stringify(res.data.data))
               this.$router.push('/')
             })
             .catch(() => {
