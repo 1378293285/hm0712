@@ -55,23 +55,36 @@ export default {
   },
   methods: {
     login () {
-      this.$refs.loginForm.validate(valid => {
+      // this.$refs.loginForm.validate(valid => {
+      //   if (valid) {
+
+      //     this.$axios
+      //       .post(
+      //         'http://ttapi.research.itcast.cn/mp/v1_0/authorizations',
+      //         this.loginForm
+      //       )
+      //       .then(res => {
+      //         // const data = res.data
+      //         // console.log(data)
+      //         // 保存登录状态
+      //         window.sessionStorage.setItem('hm0712', JSON.stringify(res.data.data))
+      //         this.$router.push('/')
+      //       })
+      //       .catch(() => {
+      //         this.$message.error('用户名或密码错误')
+      //       })
+      //   }
+      // })
+      this.$refs.loginForm.validate(async valid => {
         if (valid) {
-          this.$axios
-            .post(
-              'http://ttapi.research.itcast.cn/mp/v1_0/authorizations',
-              this.loginForm
-            )
-            .then(res => {
-              const data = res.data
-              console.log(data)
-              // 保存登录状态
-              window.sessionStorage.setItem('hm0712', JSON.stringify(res.data.data))
-              this.$router.push('/')
-            })
-            .catch(() => {
-              this.$message.error('用户名或密码错误')
-            })
+          // 当接口调用失败的时候，以下代码会出现异常
+          try {
+            const res = await this.$axios.post('authorizations', this.loginForm)
+            window.sessionStorage.setItem('hm0712', JSON.stringify(res.data.data))
+            this.$router.push('/')
+          } catch (err) {
+            this.$message.error('用户名或密码错误')
+          }
         }
       })
     }

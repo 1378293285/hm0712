@@ -3,7 +3,7 @@
     <el-aside class="my-aside" :width="collapse?'65px':'200px'">
       <div class="logo" :class="{close:collapse}"></div>
       <el-menu
-        default-active="/"
+        :default-active="$route.path"
         background-color="#002033"
         text-color="#fff"
         active-text-color="#ffd04b"
@@ -52,15 +52,15 @@
               style="vertical-align:middle"
               width="30"
               height="30"
-              src="../../assets/images/avatar.jpg"
+              :src="avatar"
               alt
             />
-            <b class="vertical-align:niddle;padding-left:5px">黑马</b>
+            <b class="vertical-align:niddle;padding-left:5px">{{name}}</b>
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item icon="el-icon-setting">个人中心</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-unlock">退出登录</el-dropdown-item>
+            <el-dropdown-item @click.native="setting()" icon="el-icon-setting">个人中心</el-dropdown-item>
+            <el-dropdown-item @click.native="logout()" icon="el-icon-unlock">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </el-header>
@@ -75,12 +75,30 @@
 export default {
   data () {
     return {
-      collapse: false
+      collapse: false,
+      name: '',
+      avatar: ''
     }
+  },
+  created () {
+    const user = JSON.parse(window.sessionStorage.getItem('hm0712'))
+    this.name = user.name
+    this.avatar = user.photo
   },
   methods: {
     toggleMenu () {
       this.collapse = !this.collapse
+    },
+    // click事件是给谁绑的 el-dropdown-item
+    // 不是原生的dom 不一定支持原生的事件绑定
+    // @click.native 触发圆水泥事件
+    setting () {
+      this.$router.push('/setting')
+    },
+    logout () {
+      // window.sessionStorage.setItem('hm0712', null)
+      window.sessionStorage.removeItem('hm0712')
+      this.$router.push('/login')
     }
   }
 }
