@@ -1,5 +1,5 @@
 <template>
-    <div class="welcome-container">
+    <div class="welcome-container" style="text-align:center">
         <img src="../../assets/images/welcome.jpg" alt="">
     </div>
 </template>
@@ -11,9 +11,5 @@ export default {
 </script>
 
 <style lang="less">
-.welcome-container {
-    img {
-        transform: translate(60%)
-    }
-}
+
 </style>
